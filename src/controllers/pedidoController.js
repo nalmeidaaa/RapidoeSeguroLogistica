@@ -53,24 +53,6 @@ const pedidoController = {
                 return res.status(404).json({ erro: "Cliente não encontrado!" });
             }
 
-            // for (const item of itens) {
-            //     const { idProduto, qtdItem } = item;
-
-            //     if (idProduto == undefined || qtdItem == undefined) {
-            //         return res.status(400).json({ erro: "Campos obrigatórios não preenchidos!" });
-            //     }
-
-            //     if (idProduto.length != 36) {
-            //         return res.status(400).json({ erro: "Id do produto inválido!" });
-            //     }
-
-            //     const produto = await produtoModel.buscarUm(idProduto);
-
-            //     if (!produto || produto.length != 1) {
-            //         return res.status(400).json({ erro: "Produto não encontrado!" });
-            //     }
-            // }
-
             await pedidoModel.inserirPedido(idCliente, dataPedido, tipoEntrega, distanciaPedido, cargaPedido, valorKM, valorKG);
 
             res.status(201).json({ message: 'Pedido cadastrado com sucesso' });
