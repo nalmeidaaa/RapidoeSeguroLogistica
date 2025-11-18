@@ -80,10 +80,10 @@ Exemplo:
 #### GET /entregas 
 - **Descrição**: Lista todas as entregas
 
-#### POST /pedidos
+#### POST /entregas
 - **Descrição**: Cria uma nova entrega
 
-#### PUT /pedidos
+#### PUT /entregas
 - **Descrição**: Atualiza uma entrega
 
 - **Body**:
