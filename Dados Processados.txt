@@ -1,3 +1,0 @@
-Aqui estão todas as informações que foram armazenadas:
-1 - Seu nome é AAA, seu endereço é AAA, a distância de entrega é 10, o valor por KM é 10, o tipo de entrega é Normal, e o valor total é 100;
- Foram 2 entregas, e a média do custo de todas as entregas é de 5;
