@@ -13,6 +13,7 @@ const { entregaController } = require("../controllers/entregaController");
  * - DELETE /entregas -> Deleta uma entrega
  */
 router.get("/entregas", entregaController.listarEntrega);
+router.get("/entregas/:idEntrega", entregaController.listarEntrega);
 router.post("/entregas", entregaController.criarEntrega);
 router.delete("/entregas/:idEntrega", entregaController.deletarEntrega);
 

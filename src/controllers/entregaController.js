@@ -13,7 +13,7 @@ const entregaController = {
     */
     listarEntrega: async (req, res) => {
         try {
-            const { idEntrega } = req.query;
+            const { idEntrega } = req.params;
 
             if (idEntrega) {
                 if (idEntrega.length != 36) {

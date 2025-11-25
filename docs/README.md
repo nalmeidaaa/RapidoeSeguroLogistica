@@ -8,12 +8,6 @@
 
 #### POST /clientes
 - **Descrição**: Cria um novo cliente
-
-#### PUT /clientes
-- **Descrição**: Atualiza um cliente
-
-#### DELETE /clientes
-- **Descrição**: Deleta um cliente já existente
 - **Body**:
 ```
 Exemplo:
@@ -37,6 +31,39 @@ Exemplo:
 }
 ```
 
+#### PUT /clientes
+- **Descrição**: Atualiza um cliente já existente, colocando o idCliente no path params
+- **Body**:
+```
+Exemplo:
+{
+    "nomeCliente": "Nikolas",
+    "cpfCliente": "28727348370",
+    "telefoneCliente": "29998627390",
+    "emailCliente": "nikolas@outlook.com",
+    "logradouroCliente": "Rua das rãs",
+    "numeroCliente": "273",
+    "bairroCliente": "Macaxeiras", 
+    "cidadeCliente": "Mato marrom",
+    "estadoCliente": "Minas Únicas",
+    "cepCliente": "423172"
+}
+```
+- **Response**:
+```
+{
+    "message": "Cliente atualizado com sucesso!"
+}
+```
+
+#### DELETE /clientes
+- **Descrição**: Deleta um cliente já existente, colocando o idCliente no path params
+- **Response**:
+```
+{
+    "message": "Cliente deletado com sucesso!"
+}
+```
 
 
 ### Pedidos
@@ -47,15 +74,10 @@ Exemplo:
 
 #### POST /pedidos
 - **Descrição**: Cria um novo pedido
-
-#### PUT /pedidos
-- **Descrição**: Atualiza um novo pedido
-
 - **Body**:
 ```
 Exemplo:
 {
-    
     "idCliente": "DE2D1E90-0091-4203-8D13-9BEB51A90A4C",
     "dataPedido": "2025/11/18",
     "tipoEntrega": "URGENTE",
@@ -73,6 +95,29 @@ Exemplo:
 }
 ```
 
+#### PUT /pedidos
+- **Descrição**: Atualiza um pedido colocando o idCliente no path params
+
+- **Body**:
+```
+Exemplo:
+{
+
+    "dataPedido": "2025/11/18",
+    "tipoEntrega": "URGENTE",
+    "distanciaPedido": "100",
+    "cargaPedido": "10",
+    "valorKM": "20",
+    "valorKG": "10"
+
+}
+```
+- **Response**:
+```
+{
+    "message": "Pedido atualizado com sucesso!"
+}
+```
 
 
 ### Entregas
@@ -82,10 +127,6 @@ Exemplo:
 
 #### POST /entregas
 - **Descrição**: Cria uma nova entrega
-
-#### PUT /entregas
-- **Descrição**: Atualiza uma entrega
-
 - **Body**:
 ```
 Exemplo:
@@ -100,5 +141,14 @@ Exemplo:
 ```
 {
     "message": "Entrega cadastrada com sucesso!"
+}
+```
+
+#### DELETE /entregas
+- **Descrição**: Deleta um entrega já existente, colocando o idEntrega no path params
+- **Response**:
+```
+{
+    "message": "Entrega deletad com sucesso!"
 }
 ```

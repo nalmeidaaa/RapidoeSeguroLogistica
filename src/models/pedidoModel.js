@@ -77,20 +77,30 @@ const pedidoModel = {
         }
     },
 
-    atualizarPedido: async (idPedido, idCliente, dataPedido) => {
+    atualizarPedido: async (idPedido, idCliente, dataPedido, tipoEntrega, distanciaPedido, cargaPedido, valorKM, valorKG) => {
         try {
             const pool = await getConnection(); // Cria conexão com o Banco de Dados
 
             const querySQL = `
                 UPDATE Pedidos
                 SET idCliente = @idCliente,
-                    dataPedido = @dataPedido
+                    dataPedido = @dataPedido,
+                    tipoEntrega = @tipoEntrega,
+                    distanciaPedido = @distanciaPedido,
+                    cargaPedido = @cargaPedido,
+                    valorKM = @valorKM,
+                    valorKG = @valorKG
                 WHERE idPedido = @idPedido
             `
             await pool.request()
-                .input('idCliente', sql.UniqueIdentifier, idCliente)
-                .input('dataPedido', sql.Date, dataPedido)
                 .input('idPedido', sql.UniqueIdentifier, idPedido)
+                .input('idCliente', sql.UniqueIdentifier, idCliente)
+                .input("dataPedido", sql.Date, dataPedido)
+                .input("tipoEntrega", sql.VARCHAR(7), tipoEntrega)
+                .input("distanciaPedido", sql.Int, distanciaPedido)
+                .input("cargaPedido", sql.Int, cargaPedido)
+                .input("valorKM", sql.DECIMAL(10, 2), valorKM)
+                .input("valorKG", sql.DECIMAL(10, 2), valorKG)
                 .query(querySQL);
 
         } catch (error) {

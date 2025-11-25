@@ -10,7 +10,7 @@ const clienteController = {
 
     listarClientes: async (req, res) => {
         try {
-            const { idCliente } = req.query; // Esse query pede o idProduto
+            const { idCliente } = req.params; // Esse params pede o idCliente
 
             if (idCliente) { //
                 if (idCliente.length != 36) { // Verifica se o idCliente tem 36 caracteres 
