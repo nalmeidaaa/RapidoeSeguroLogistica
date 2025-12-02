@@ -39,6 +39,7 @@ const entregaModel = {
         try {
             const pool = await getConnection();
 
+
             const querySQL = `
                 INSERT INTO Entregas(idPedido, valorDistancia, valorPeso, acrescimoEntrega, descontoEntrega, taxaEntrega, valorFinal, statusEntrega)
                 VALUES(@idPedido, @valorDistancia, @valorPeso, @acrescimoEntrega, @descontoEntrega, @taxaEntrega, @valorFinal, @statusEntrega)
@@ -52,45 +53,37 @@ const entregaModel = {
                 .input('descontoEntrega', sql.Decimal(10, 2), descontoEntrega)
                 .input('taxaEntrega', sql.Decimal(10, 2), taxaEntrega)
                 .input('valorFinal', sql.Decimal(10, 2), valorFinal)
-                .input('statusEntrega', sql.VarChar(50), statusEntrega)
+                .input('statusEntrega', sql.VarChar(15), statusEntrega)
                 .query(querySQL);
 
+
         } catch (error) {
+
             console.error('Erro ao inserir entrega: ', error);
             throw error;
         }
     },
 
-    atualizarEntrega: async (idEntrega, idPedido, valorDistancia, valorPeso, acrescimoEntrega, descontoEntrega, taxaEntrega, valorFinal, statusEntrega) => {
+    atualizarEntrega: async (idEntrega, statusEntrega) => {
         try {
             const pool = await getConnection();
+            const transaction = new sql.Transaction(pool);
+            await transaction.begin(); // Inicia a transação
 
             const querySQL = `
                 UPDATE Entregas
-                SET idPedido = @idPedido,
-                    valorDistancia = @valorDistancia,
-                    valorPeso = @valorPeso,
-                    acrescimoEntrega = @acrescimoEntrega,
-                    descontoEntrega = @descontoEntrega,
-                    taxaEntrega = @taxaEntrega,
-                    valorFinal = @valorFinal,
-                    statusEntrega = @statusEntrega
+                SET statusEntrega = @statusEntrega
                 WHERE idEntrega = @idEntrega
             `;
 
-            await pool.request()
+            await transaction.request()
                 .input('idEntrega', sql.UniqueIdentifier, idEntrega)
-                .input('idPedido', sql.UniqueIdentifier, idPedido)
-                .input('valorDistancia', sql.Decimal(10, 2), valorDistancia)
-                .input('valorPeso', sql.Decimal(10, 2), valorPeso)
-                .input('acrescimoEntrega', sql.Decimal(10, 2), acrescimoEntrega)
-                .input('descontoEntrega', sql.Decimal(10, 2), descontoEntrega)
-                .input('taxaEntrega', sql.Decimal(10, 2), taxaEntrega)
-                .input('valorFinal', sql.Decimal(10, 2), valorFinal)
-                .input('statusEntrega', sql.VarChar(50), statusEntrega)
+                .input('statusEntrega', sql.VarChar(15), statusEntrega)
                 .query(querySQL);
+            await transaction.commit();
 
         } catch (error) {
+            await transaction.rollback() // Desfaz tudo caso dê erro
             console.error('Erro ao atualizar entrega: ', error);
             throw error;
         }

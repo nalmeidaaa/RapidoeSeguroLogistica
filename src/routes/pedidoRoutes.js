@@ -17,7 +17,7 @@ const { pedidoController } = require("../controllers/pedidoController");
 router.get("/pedidos/:idPedido", pedidoController.listarPedidos);
 router.get("/pedidos", pedidoController.listarPedidos);
 router.post("/pedidos", pedidoController.criarPedido);
-router.put("/pedidos/:idPedido", pedidoController.atualizarPedido);
+router.put("/pedidos", pedidoController.atualizarPedido);
 // router.delete("/pedidos/:idPedido", pedidoController.deletarPedido);
 
 module.exports = { pedidoRoutes: router };

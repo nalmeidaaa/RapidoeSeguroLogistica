@@ -12,7 +12,7 @@ router.get("/clientes", clienteController.listarClientes);
 router.post("/clientes", clienteController.criarCliente);
 
 // PUT /clientes -> Atualiza um cliente
-router.put("/clientes/:idCliente", clienteController.atualizarCliente);
+router.put("/clientes", clienteController.atualizarCliente);
 
 // DELETE /clientes -> Deleta um cliente
 router.delete("/clientes/:idCliente", clienteController.deletarCliente);

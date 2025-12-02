@@ -1,5 +1,8 @@
 const { entregaModel } = require("../models/entregaModel");
+const { clienteModel } = require("../models/clienteModel");
+
 const { sql, getConnection } = require("../config/db");
+const { Transaction } = require("mssql");
 
 const entregaController = {
     /**
@@ -11,6 +14,17 @@ const entregaController = {
      * @returns {Promise<void>} - Retorna uma resposta JSON com a lista de entregas.
      * @throws - Mostra no console e retorna erro 500 se ocorrer falha ao buscar as entregas.
     */
+
+    // ---------------------
+    // LISTAR TODAS AS ENTREGAS
+    // GET/entregas
+    // ---------------------  
+
+    // ---------------------
+    // LISTAR APENAS UMA ENTREGA
+    // GET/entregas/:@idEntrega
+    // ---------------------  
+
     listarEntrega: async (req, res) => {
         try {
             const { idEntrega } = req.params;
@@ -35,63 +49,42 @@ const entregaController = {
 
 
     //-------------
-    // CRIAR UMA NOVA ENTREGA
+    // ATUALIZA UMA ENTREGA
     // POST /entregas
     /*
     {
-        "idPedido": "DE2D1E90-0091-4203-8D13-9BEB51A90A4C",
-	    "statusEntrega": "Entregue"
+        "idEntrega": "DE2D1E90-0091-4203-8D13-9BEB51A90A4C",
+        "statusEntrega": "Entregue"
     }
      */
     //-------------
 
-    criarEntrega: async (req, res) => {
+    atualizarEntrega: async (req, res) => {
         try {
-            const pool = await getConnection()
-            const { idPedido, statusEntrega } = req.body;
-            let querySQL = `SELECT distanciaPedido, valorKM, cargaPedido, valorKG, tipoEntrega FROM Pedidos
-            WHERE idPedido = @idPedido`
-            let result = await pool.request()
-                .input('idPedido', sql.UniqueIdentifier, idPedido)
-                .query(querySQL);
+            const { idEntrega, statusEntrega } = req.body;
 
-            const rs = result.recordset[0]
-
-            let valorDistancia = rs.distanciaPedido * rs.valorKM;
-            let valorPeso = rs.cargaPedido * rs.valorKG
-            
-            let valorBase = valorDistancia + valorPeso
-            let valorFinal = valorBase
-
-            //acrescimoEntrega
-            let acrescimoEntrega = 0
-            if (rs.tipoEntrega.toLowerCase() == "urgente") {
-                acrescimoEntrega = valorFinal * 0.2
+            if (idEntrega.length != 36) {
+                return res.status(400).json({ erro: 'id da entrega inválido.' });
             }
-            valorFinal = valorFinal + acrescimoEntrega            
-            //descontoEntrega
-            let descontoEntrega = 0
-            if (valorBase > 500) {
-                descontoEntrega = valorBase * 0.1
-            }
-            
-            //taxaEntrega
-            let taxaEntrega = 0
-            if (rs.cargaPedido > 50) {
-                taxaEntrega = 15
-            }
-            valorFinal = valorFinal + taxaEntrega - descontoEntrega
-            console.log({ valorFinal });
 
-            await entregaModel.inserirEntrega(idPedido, valorDistancia, valorPeso, acrescimoEntrega, descontoEntrega, taxaEntrega, valorFinal, statusEntrega);
+            if (statusEntrega == "Calculado" || statusEntrega == "Em transito" || statusEntrega == "Entregue" || statusEntrega == "Cancelado") {
 
-            res.status(201).json({ message: 'Entrega cadastrada com sucesso!' });
+                await entregaModel.atualizarEntrega(idEntrega, statusEntrega);
+                res.status(200).json({ message: 'Entrega atualizada com sucesso!' });
+            } else {
+                return res.status(400).json({ erro: 'Status de entrega inválido.' });
+            }
 
         } catch (error) {
-            console.error('Erro ao criar entrega:', error);
-            res.status(500).json({ erro: 'Erro no servidor ao criar entrega' });
+            console.error('Erro ao atualizar entrega:', error);
+            res.status(500).json({ erro: 'Erro no servidor ao atualizar entrega' });
         }
     },
+
+    // ---------------------
+    // DELETAR UM CLIENTE EXISTENTE
+    // DELETE/clientes/:@idCliente
+    // ---------------------  
 
     deletarEntrega: async (req, res) => {
         try {

@@ -14,7 +14,7 @@ const { entregaController } = require("../controllers/entregaController");
  */
 router.get("/entregas", entregaController.listarEntrega);
 router.get("/entregas/:idEntrega", entregaController.listarEntrega);
-router.post("/entregas", entregaController.criarEntrega);
+router.put("/entregas", entregaController.atualizarEntrega);
 router.delete("/entregas/:idEntrega", entregaController.deletarEntrega);
 
 module.exports = { entregaRoutes: router };
