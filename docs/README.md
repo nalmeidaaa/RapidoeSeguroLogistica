@@ -275,4 +275,3 @@ Exemplo:
       - `404 Not Found`: Entrega não encontrada.
       - `500 Internal Server Error`: Erro no servidor ao deletar entrega.
 
------
